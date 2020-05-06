@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.10)
-project(untitled)
+project(STUD_PAMSI_minimax)
 
 set(CMAKE_CXX_STANDARD 17)
 
@@ -23,8 +23,8 @@ if(SFML_FOUND)
     message(STATUS "SFML_VERSION: ${SFML_VERSION}")
 endif()
 
-add_executable(untitled src/main.cpp)
-target_link_libraries (untitled sfml-graphics sfml-window sfml-system)
+add_executable(STUD_PAMSI_minimax src/main.cpp)
+target_link_libraries (STUD_PAMSI_minimax sfml-graphics sfml-window sfml-system)
 
 endif()
 

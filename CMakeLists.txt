@@ -23,7 +23,7 @@ if(SFML_FOUND)
     message(STATUS "SFML_VERSION: ${SFML_VERSION}")
 endif()
 
-add_executable(STUD_PAMSI_minimax src/main.cpp include/AlgorithmFunctions.h src/AlgorithmFunctions.cpp)
+add_executable(STUD_PAMSI_minimax src/main.cpp include/AlgorithmFunctions.h src/AlgorithmFunctions.cpp src/Game.cpp include/Game.h src/Connect4.cpp include/Connect4.h include/BoardPositionState.h)
 target_link_libraries (STUD_PAMSI_minimax sfml-graphics sfml-window sfml-system)
 
 endif()

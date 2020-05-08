@@ -1,20 +1,32 @@
 #include <iostream>
 #include <SFML/Graphics.hpp>
+#include "AlgorithmFunctions.h"
+#include "Connect4.h"
 
 //if using Windows Subsystem for Linux - this allows viewing sfml
 #define WSL_DISPLAY setenv("DISPLAY", "127.0.0.1:0", true)
+#define LOG(x) std::cout << x << std::endl
 
-//test
+//test sfml
 void SfmlCheck();
 
-int main() {
-    WSL_DISPLAY;
-    SfmlCheck();
 
+int main() {
+    Connect4 game;
+    game.Run();
+    //SfmlCheck();
+
+
+
+
+
+
+    return 0;
 }
 
 
 void SfmlCheck() {
+    WSL_DISPLAY;
     sf::RenderWindow renderWindow(sf::VideoMode(640, 480), "Demo Game");
 
     sf::Event event;

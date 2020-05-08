@@ -52,39 +52,40 @@ bool Connect4::HaveWinner() const {
 
 
     //check diagonals
-    //from left upper to right bottom - 1
-    int starting_column = _last_move.column - _last_move.row > 0 ? _last_move.column - _last_move.row : 0;
-    int starting_row = _last_move.row - _last_move.column > 0 ? _last_move.row - _last_move.column : 0;
+    //from left top to right bottom - first diagonal
     std::vector<BoardPositionState> diagonal_1;
 
-    for (int i = starting_row; i < 6; ++i) {
-        for (int j = starting_column; j < 7; ++j) {
-            if (j == starting_column and i == starting_row) {
+    for (int i = 0; i < 6; ++i) {
+        for (int j = 0; j < 7; ++j) {
+            if (i - j == _last_move.row - _last_move.column) {
                 diagonal_1.emplace_back(_board[j][i]);
-                ++starting_row;
-                ++starting_column;
             }
         }
     }
-    auto diag_it = std::search(diagonal_1.begin(),
-                               diagonal_1.end(),
-                               col_and_row_winner.begin(),
-                               col_and_row_winner.end());
-    if (diag_it != diagonal_1.end()) {
+    auto diag_1_it = std::search(diagonal_1.begin(),
+                                 diagonal_1.end(),
+                                 col_and_row_winner.begin(),
+                                 col_and_row_winner.end());
+    if (diag_1_it != diagonal_1.end()) {
         return true;
     }
 
-    //check 2 diagonal
+    //from left bottom to right top - second diagonal
     std::vector<BoardPositionState> diagonal_2;
-    for (int i = starting_row; i < 6; ++i) {
-        for (int j = starting_column; j < 7; ++j) {
-            if (j+i == _last_move.column + _last_move.row) {
+    for (int i = 0; i < 6; ++i) {
+        for (int j = 0; j < 7; ++j) {
+            if (j + i == _last_move.column + _last_move.row) {
                 diagonal_2.emplace_back(_board[j][i]);
             }
         }
     }
-
-
+    auto diag_2_it = std::search(diagonal_2.begin(),
+                                 diagonal_2.end(),
+                                 col_and_row_winner.begin(),
+                                 col_and_row_winner.end());
+    if (diag_2_it != diagonal_2.end()) {
+        return true;
+    }
 
 
     return false;

@@ -1,7 +1,7 @@
 #include <iostream>
 #include <SFML/Graphics.hpp>
-#include "AlgorithmFunctions.h"
-#include "Connect4.h"
+#include "Connect4AI.h"
+
 
 //if using Windows Subsystem for Linux - this allows viewing sfml
 #define WSL_DISPLAY setenv("DISPLAY", "127.0.0.1:0", true)
@@ -12,7 +12,7 @@ void SfmlCheck();
 
 
 int main() {
-    Connect4 game;
+    Connect4AI game;
     game.Run();
     //SfmlCheck();
 

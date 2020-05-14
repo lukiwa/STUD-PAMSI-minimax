@@ -7,7 +7,11 @@
 #include <array>
 #include <tuple>
 #include "Game.h"
-#include "BoardPositionState.h"
+
+
+enum class BoardPositionState {
+    PLAYER, AI, FREE
+};
 
 
 struct LastMove {
@@ -23,11 +27,13 @@ struct LastMove {
 };
 
 class Connect4 : public Game {
-private:
+protected:
+    const int _number_of_rows;
+    const int _number_of_columns;
     const int _available_places;
     int _taken_places;
     BoardPositionState _current_player;
-    //std::pair<int, int> _last_move;
+    mutable BoardPositionState _winner;
     LastMove _last_move;
     std::array<std::array<BoardPositionState, 6>, 7> _board{};
 

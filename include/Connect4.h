@@ -42,6 +42,8 @@ protected:
 
     bool HaveWinner() const override;
 
+    bool CoinsConnected(int connected, BoardPositionState player) const;
+
     bool IsTie() const override;
 
     void TakeTurn() override;

@@ -40,7 +40,7 @@ int Connect4AI::MiniMax(int depth, bool is_maximizing) {
     if (_winner == BoardPositionState::PLAYER) {
         return -depth;
     }
-
+    /////////////aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 
     int bestValue = is_maximizing ? -1 : 1;
     for (int i = 0; i < _number_of_columns; ++i) {

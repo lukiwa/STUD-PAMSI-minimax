@@ -177,3 +177,72 @@ bool Connect4::DropCoin(int column, BoardPositionState state) {
     return false;
 }
 
+bool Connect4::CoinsConnected(int connected, BoardPositionState player) const {
+    //if row or column contains that set - there is a winner
+
+    std::vector<BoardPositionState> col_and_row_winner(4);
+    std::fill(col_and_row_winner.begin(), col_and_row_winner.end(), player
+    );
+    _winner = _last_move.state;
+
+
+    //check column of last move for set of 4 elements
+    auto col_it = std::search(_board[_last_move.column].begin(),
+                              _board[_last_move.column].end(),
+                              col_and_row_winner.begin(),
+                              col_and_row_winner.end());
+    if (col_it != _board[_last_move.column].end()) {
+        return true;
+    }
+
+
+    //check rows
+    std::array<BoardPositionState, 7> row_arr{};
+    for (int i = 0; i < _number_of_columns; ++i) {
+        row_arr[i] = _board[i][_last_move.row];
+    }
+    auto row_it = std::search(row_arr.begin(),
+                              row_arr.end(),
+                              col_and_row_winner.begin(),
+                              col_and_row_winner.end());
+    if (row_it != row_arr.end()) {
+        return true;
+    }
+
+
+    //check diagonals
+    //from left top to right bottom - first diagonal
+    std::vector<BoardPositionState> diagonal_1;
+    //from left bottom to right top - second diagonal
+    std::vector<BoardPositionState> diagonal_2;
+
+    for (int i = 0; i < _number_of_rows; ++i) {
+        for (int j = 0; j < _number_of_columns; ++j) {
+            if (i - j == _last_move.row - _last_move.column) {
+                diagonal_1.emplace_back(_board[j][i]);
+            }
+            if (j + i == _last_move.column + _last_move.row) {
+                diagonal_2.emplace_back(_board[j][i]);
+            }
+        }
+    }
+    auto diag_1_it = std::search(diagonal_1.begin(),
+                                 diagonal_1.end(),
+                                 col_and_row_winner.begin(),
+                                 col_and_row_winner.end());
+
+    auto diag_2_it = std::search(diagonal_2.begin(),
+                                 diagonal_2.end(),
+                                 col_and_row_winner.begin(),
+                                 col_and_row_winner.end());
+    if (diag_1_it != diagonal_1.end()) {
+        return true;
+    }
+    if (diag_2_it != diagonal_2.end()) {
+        return true;
+    }
+
+    _winner = BoardPositionState::FREE;
+    return false;
+}
+

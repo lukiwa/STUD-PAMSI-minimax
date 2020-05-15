@@ -22,38 +22,6 @@ void Connect4AI::TakeTurn() {
     }
 }
 
-/**
- * @brief Minimax algorithm for finding best move in the game
- * @param depth depth of the search
- * @param is_maximizing is the maximizer turn
- * @return max score
- */
-int Connect4AI::MiniMax(int depth, bool is_maximizing) {
-    if (depth <= 0) {
-        return 0;
-    }
-
-    HaveWinner();
-    if (_winner == BoardPositionState::AI) {
-        return depth;
-    }
-    if (_winner == BoardPositionState::PLAYER) {
-        return -depth;
-    }
-    /////////////aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-
-    int bestValue = is_maximizing ? -1 : 1;
-    for (int i = 0; i < _number_of_columns; ++i) {
-        if (!DropCoin(i, is_maximizing ? BoardPositionState::AI : BoardPositionState::PLAYER)) {
-            continue;
-        }
-        int v = MiniMax(depth - 1, !is_maximizing);
-        bestValue = is_maximizing ? std::max(bestValue, v) : std::min(bestValue, v);
-        RemoveTopCoin(i);
-    }
-    return bestValue;
-}
-
 /** TODO - random move if more than one
  * @brief Find best move for AI
  * @return column to play
@@ -64,12 +32,65 @@ int Connect4AI::FindBestMove() {
         if (!DropCoin(i, BoardPositionState::AI)) {
             continue;
         }
-        moves.emplace(MiniMax(_max_depth, false), i);
+        auto x = MiniMax(i, _max_depth, true);
+        moves.emplace(x, i);
+        std::cout << x << " " << i << std::endl;
         RemoveTopCoin(i);
     }
 
     return moves.rbegin()->second;
 }
+
+/**
+ * @brief Minimax algorithm for finding best move in the game
+ * @param depth depth of the search
+ * @param is_maximizing is the maximizer turn
+ * @return max score
+ */
+int Connect4AI::MiniMax(int node, int depth, bool is_maximizing) {
+    int bestValue = is_maximizing ? -Evaluate(BoardPositionState::AI) : Evaluate(BoardPositionState::PLAYER);
+
+
+    if (depth <= 0) {
+        return bestValue;
+    }
+/*
+    HaveWinner();
+    if (_winner == BoardPositionState::AI) {
+        return depth;
+    }
+    if (_winner == BoardPositionState::PLAYER) {
+        return -depth;
+    }
+*/
+
+
+    if (!DropCoin(node, is_maximizing ? BoardPositionState::AI : BoardPositionState::PLAYER)) {
+        return bestValue;
+    }
+    int v = MiniMax(node, depth - 1, !is_maximizing);
+    bestValue = is_maximizing ? std::max(bestValue, v) : std::min(bestValue, v);
+    RemoveTopCoin(node);
+
+
+    return bestValue;
+}
+
+int Connect4AI::Evaluate(BoardPositionState player) {
+    int score = 0;
+    if (CoinsConnected(4, player)) {
+        score += 1000;
+    }
+    if (CoinsConnected(2, player)) {
+        score += 4;
+    }
+    if (_last_move.column == 2) {
+        score += 2;
+    }
+    return score;
+
+}
+
 
 /** TODO improve this
  * @brief Remove top coin of given column
@@ -91,5 +112,7 @@ bool Connect4AI::RemoveTopCoin(int column) {
 }
 
 Connect4AI::Connect4AI() : _max_depth(6) {}
+
+
 
 

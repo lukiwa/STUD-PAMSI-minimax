@@ -11,17 +11,18 @@
 class Connect4AI : public Connect4, public AIGame {
 private:
     const int _max_depth;
+
+    bool RemoveTopCoin(int column);
+
+    int Evaluate(BoardPositionState player);
+
+
 public:
     Connect4AI();
 
-private:
-    bool RemoveTopCoin(int column);
-
-
-public:
     void TakeTurn() override;
 
-    int MiniMax(int depth, bool is_maximizing) override;
+    int MiniMax(int node, int depth, bool is_maximizing) override;
 
     int FindBestMove() override;
 };

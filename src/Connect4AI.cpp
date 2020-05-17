@@ -52,15 +52,13 @@ int Connect4AI::FindBestMove() {
 
 int Connect4AI::Minimize(int alpha, int beta, int depth) {
 
-    if (HaveWinner()) {
-        if (_winner == BoardPositionState::PLAYER) {
-            return 1000 + depth;
-        }
+
+    if (CoinsConnected(4, BoardPositionState::AI)) {
+        return 1000 + depth;
     }
-    if (depth <= 0) return Evaluate(BoardPositionState::PLAYER);
-
-
     if (IsTie()) { return depth; }
+    if (depth <= 0) return Evaluate(BoardPositionState::AI);
+
 
     int bestMoveScore = 1000000;
 
@@ -86,13 +84,11 @@ int Connect4AI::Minimize(int alpha, int beta, int depth) {
 
 int Connect4AI::Maximize(int alpha, int beta, int depth) {
 
-    if (HaveWinner()) {
-        if (_winner == BoardPositionState::PLAYER) {
-            return -1000 - depth;
-        }
+    if (CoinsConnected(4, BoardPositionState::PLAYER)) {
+        return -1000 - depth;
     }
     if (IsTie()) { return -depth; }
-    if (depth <= 0) return -Evaluate(BoardPositionState::AI);
+    if (depth <= 0) return -Evaluate(BoardPositionState::PLAYER);
 
 
     int bestMoveScore = -1000000;
@@ -127,27 +123,25 @@ int Connect4AI::Evaluate(BoardPositionState player) {
                               {4, 6, 8,  10, 8,  6, 4},
                               {3, 4, 5,  7,  5,  4, 3}};
 
-    int utility = 1;
-    int sum = 0;
-    for (int i = 0; i < _number_of_rows; i++)
-        for (int j = 0; j < _number_of_columns; j++)
-            if (_board[j][i] == BoardPositionState::PLAYER)
-                sum += evaluationTable[i][j];
-    return utility + sum;
 
-/*
     int score = 0;
+    for (int i = 0; i < _number_of_rows; i++) {
+        for (int j = 0; j < _number_of_columns; j++) {
+            if (_board[j][i] == player) {
+                score += evaluationTable[i][j];
+            }
+        }
+    }
+    if (CoinsConnected(2, player)) {
+        score += 20;
+    }
     if (CoinsConnected(3, player)) {
         score += 30;
     }
-    if (CoinsConnected(2, player)) {
-        score += 10;
-    }
-    if (_board[2][5] == player || _board[3][5] == player || _board[4][5] == player) {
-        score += 50;
-    }
+
     return score;
-*/
+
+
 }
 
 

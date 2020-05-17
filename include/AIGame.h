@@ -9,7 +9,8 @@ class AIGame {
 public:
     virtual int FindBestMove() = 0;
 
-    virtual int MiniMax(int node, int depth, bool is_maximizing) = 0;
+    virtual int Minimize(int alpha, int beta, int depth) = 0;
+    virtual int Maximize(int alpha, int beta, int depth) = 0;
 };
 
 

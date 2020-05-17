@@ -16,13 +16,16 @@ private:
 
     int Evaluate(BoardPositionState player);
 
+    int Minimize(int alpha, int beta, int depth) override;
+
+    int Maximize(int alpha, int beta, int depth) override;
+
 
 public:
     Connect4AI();
 
     void TakeTurn() override;
 
-    int MiniMax(int node, int depth, bool is_maximizing) override;
 
     int FindBestMove() override;
 };

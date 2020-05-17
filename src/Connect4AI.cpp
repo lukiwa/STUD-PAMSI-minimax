@@ -22,8 +22,8 @@ void Connect4AI::TakeTurn() {
     }
 }
 
-/** TODO - random move if more than one
- * @brief Find best move for AI
+/**
+ * @brief Find best move for AI - aka. Minimax
  * @return column to play
  */
 int Connect4AI::FindBestMove() {
@@ -31,112 +31,139 @@ int Connect4AI::FindBestMove() {
     int alpha = -1000000;
     int beta = 1000000;
 
-    int bestMoveScore = -1000000;
+
     for (int i = 0; i < _number_of_columns; ++i) {
         if (!DropCoin(i, BoardPositionState::AI)) {
             continue;
         }
+        //AI has made a move - it's now minimizer's (human's) turn
         auto score = Minimize(alpha, beta, _max_depth);
         moves.emplace(score, i);
 
-        if (score > bestMoveScore) {
-            bestMoveScore = score;
-            alpha = score;
-        }
+
         std::cout << score << " " << i << " " << alpha << std::endl;
         RemoveTopCoin(i);
     }
 
+    //get move with highest score
     return moves.rbegin()->second;
 }
 
+/**
+ * @brief Minimizer's turn
+ * @param alpha alpha param
+ * @param beta beta param
+ * @param depth depth of search
+ * @return score
+ */
 int Connect4AI::Minimize(int alpha, int beta, int depth) {
 
-
+    //if ai in prev turn has won
     if (CoinsConnected(4, BoardPositionState::AI)) {
         return 1000 + depth;
     }
     if (IsTie()) { return depth; }
+    //in non-terminal case - evaluate ai last move
     if (depth <= 0) return Evaluate(BoardPositionState::AI);
 
 
-    int bestMoveScore = 1000000;
+    int best_move_score = 1000000;
 
     for (int i = 0; i < _number_of_columns; i++) {
+        //human's turn
         if (!DropCoin(i, BoardPositionState::PLAYER)) {
             continue;
         }
-        int moveScore = Maximize(alpha, beta, depth - 1);
-        if (moveScore < beta) {
-            beta = moveScore;
+        //human has made a turn - it's ai's turn
+        auto move_score = Maximize(alpha, beta, depth - 1);
+
+        //minimizing step - beta changes
+        if (move_score < beta) {
+            beta = move_score;
         }
-        if (moveScore < bestMoveScore) {
-            bestMoveScore = moveScore;
+        if (move_score < best_move_score) {
+            best_move_score = move_score;
         }
         RemoveTopCoin(i);
 
-
+        //alpha cut-off
         if (beta <= alpha) break;
     }
 
-    return bestMoveScore;
+    return best_move_score;
 }
 
+/**
+ * @brief Maximizer's turn
+ * @param alpha alpha parameter
+ * @param beta beta parameter
+ * @param depth depth of search
+ * @return score
+ */
 int Connect4AI::Maximize(int alpha, int beta, int depth) {
 
+    //if human in prev turn has won
     if (CoinsConnected(4, BoardPositionState::PLAYER)) {
         return -1000 - depth;
     }
-    if (IsTie()) { return -depth; }
+    if (IsTie()) {
+        return -depth;
+    }
+    //in non-terminal case - evaluate ai last move
     if (depth <= 0) return -Evaluate(BoardPositionState::PLAYER);
 
 
-    int bestMoveScore = -1000000;
+    int best_move_score = -1000000;
     for (int i = 0; i < _number_of_columns; i++) {
+        //ai's turn
         if (!DropCoin(i, BoardPositionState::AI)) {
             continue;
         }
-        int moveScore = Minimize(alpha, beta, depth - 1);
-        if (moveScore > alpha) {
-            alpha = moveScore;
+        //ai has made a turn - it is ai's turn
+        auto move_score = Minimize(alpha, beta, depth - 1);
+        if (move_score > alpha) {
+            alpha = move_score;
         }
-        if (moveScore > bestMoveScore) {
-            bestMoveScore = moveScore;
+        if (move_score > best_move_score) {
+            best_move_score = move_score;
         }
         RemoveTopCoin(i);
 
+        //beta cut-off
         if (beta <= alpha) break;
     }
 
 
-    return bestMoveScore;
+    return best_move_score;
 
 }
 
-
+/** TODO - possible connections rating
+ * @brief Evaluate score on non-terminal state
+ * @param player which player move will be evaluated
+ * @return score
+ */
 int Connect4AI::Evaluate(BoardPositionState player) {
 
-    int evaluationTable[6][7]{{3, 4, 5,  7,  5,  4, 3},
-                              {4, 6, 8,  10, 8,  6, 4},
-                              {5, 8, 11, 13, 11, 8, 5},
-                              {5, 8, 11, 13, 11, 8, 5},
-                              {4, 6, 8,  10, 8,  6, 4},
-                              {3, 4, 5,  7,  5,  4, 3}};
+    int evaluation_table[6][7]{{3, 4, 5,  7,  5,  4, 3},
+                               {4, 6, 8,  10, 8,  6, 4},
+                               {5, 8, 11, 13, 11, 8, 5},
+                               {5, 8, 11, 13, 11, 8, 5},
+                               {4, 6, 8,  10, 8,  6, 4},
+                               {3, 4, 5,  7,  5,  4, 3}};
 
 
     int score = 0;
-    for (int i = 0; i < _number_of_rows; i++) {
-        for (int j = 0; j < _number_of_columns; j++) {
+    for (int i = 0; i < _number_of_rows; ++i) {
+        for (int j = 0; j < _number_of_columns; ++j) {
             if (_board[j][i] == player) {
-                score += evaluationTable[i][j];
+                score += evaluation_table[i][j];
             }
         }
     }
-    if (CoinsConnected(2, player)) {
-        score += 20;
-    }
+    //connections of 3 are promoted
     if (CoinsConnected(3, player)) {
-        score += 30;
+        score += 50;
     }
 
     return score;
@@ -151,20 +178,22 @@ int Connect4AI::Evaluate(BoardPositionState player) {
  * @return true if removed, false if not
  */
 bool Connect4AI::RemoveTopCoin(int column) {
-    int row = 0;
-    while (row < _number_of_rows && _board[column][row] == BoardPositionState::FREE) {
-        row++;
-    }
-    if (row == _number_of_rows) {
+
+    if (column >= _number_of_columns) {
         return false;
     }
+    int row = 0;
+    while (row < _number_of_rows && _board[column][row] == BoardPositionState::FREE) {
+        ++row;
+    }
+
 
     _board[column][row] = BoardPositionState::FREE;
-    //_changed = true;??
     return true;
+
 }
 
-Connect4AI::Connect4AI() : _max_depth(6) {}
+Connect4AI::Connect4AI(int max_depth) : _max_depth(max_depth) {}
 
 
 

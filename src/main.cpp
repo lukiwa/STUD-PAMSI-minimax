@@ -12,7 +12,7 @@ void SfmlCheck();
 
 
 int main() {
-    Connect4AI game;
+    Connect4AI game(6);
     game.Run();
     //SfmlCheck();
 

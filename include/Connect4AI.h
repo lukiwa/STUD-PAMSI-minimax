@@ -14,6 +14,8 @@ private:
 
     bool RemoveTopCoin(int column);
 
+    int FindBestMove() override;
+
     int Evaluate(BoardPositionState player);
 
     int Minimize(int alpha, int beta, int depth) override;
@@ -22,12 +24,11 @@ private:
 
 
 public:
-    Connect4AI();
+    explicit Connect4AI(int max_depth);
 
     void TakeTurn() override;
 
 
-    int FindBestMove() override;
 };
 
 

@@ -147,9 +147,11 @@ BoardPositionState Connect4::GetCurrentPlayer() {
 void Connect4::ChangeCurrentPlayer() {
     if (_current_player == BoardPositionState::PLAYER) {
         _current_player = BoardPositionState::AI;
+        return;
     }
     if (_current_player == BoardPositionState::AI) {
         _current_player = BoardPositionState::PLAYER;
+        return;
     }
 
 

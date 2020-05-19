@@ -44,8 +44,8 @@ void Connect4UserInterface::Run() {
     while (_window.isOpen()) {
         while (_window.pollEvent(_event)) {
             if (_event.type == sf::Event::EventType::Closed) { _window.close(); }
-           // TakeTurn();
-           //UpdateCoinsColors();
+            TakeTurn();
+            UpdateCoinsColors();
 
             DisplayGame();
 
@@ -59,7 +59,7 @@ void Connect4UserInterface::Run() {
 }
 
 void Connect4UserInterface::Start() {
-
+    DisplayGame();
 }
 
 void Connect4UserInterface::End() {
@@ -75,13 +75,13 @@ void Connect4UserInterface::DisplayGame() {
     float current_x = _board_picture.getPosition().x + 1.5 * _coin_radius;
     float current_y = _board_picture.getPosition().y + 1.5 * _coin_radius;
 
-    for (int i = 0; i < _game.GetColumnNumber(); ++i) {
-        _coins[i][0].setPosition(current_x, current_y);
-        _window.draw(_coins[i][0]);
-        for (int j = 0; j < _game.GetRowNumber(); ++j) {
+    for (int i = 0; i < _game.GetRowNumber(); ++i) {
+        _coins[0][i].setPosition(current_x, current_y);
+        _window.draw(_coins[0][i]);
+        for (int j = 1; j < _game.GetColumnNumber(); ++j) {
             current_x += 3 * _coin_radius;
-            _coins[i][j].setPosition(current_x, current_y);
-            _window.draw(_coins[i][j]);
+            _coins[j][i].setPosition(current_x, current_y);
+            _window.draw(_coins[j][i]);
         }
         current_y += 3 * _coin_radius;
         current_x = _board_picture.getPosition().x + 1.5 * _coin_radius;
@@ -103,6 +103,7 @@ void Connect4UserInterface::TakeTurn() {
 
     if (_game.GetCurrentPlayer() == BoardPositionState::AI) {
         auto column = _game.FindBestMove();
+        std::cout << "Column" << column << std::endl;
         _game.DropCoin(column, BoardPositionState::AI);
 
 

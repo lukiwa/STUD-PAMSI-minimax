@@ -23,7 +23,7 @@ if(SFML_FOUND)
     message(STATUS "SFML_VERSION: ${SFML_VERSION}")
 endif()
 
-add_executable(STUD_PAMSI_minimax src/main.cpp src/Game.cpp include/Game.h src/Connect4.cpp include/Connect4.h src/Connect4AI.cpp include/Connect4AI.h include/AIGame.h src/SfmlManager.cpp include/SfmlManager.h src/DisplayableGame.cpp include/DisplayableGame.h)
+add_executable(STUD_PAMSI_minimax src/main.cpp src/Connect4.cpp include/Connect4.h src/Connect4AI.cpp include/Connect4AI.h include/AIGame.h src/SfmlManager.cpp include/SfmlManager.h include/BoardPosition.h src/Connect4UserInterface.cpp include/Connect4UserInterface.h)
 target_link_libraries (STUD_PAMSI_minimax sfml-graphics sfml-window sfml-system)
 
 endif()

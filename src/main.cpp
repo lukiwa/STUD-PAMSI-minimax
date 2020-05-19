@@ -1,7 +1,7 @@
 #include <iostream>
 #include <SFML/Graphics.hpp>
 #include "Connect4AI.h"
-#include "SfmlManager.h"
+#include "Connect4UserInterface.h"
 
 
 //if using Windows Subsystem for Linux - this allows viewing sfml
@@ -13,12 +13,20 @@ void SfmlCheck();
 
 
 int main() {
+    WSL_ALLOW_DISPLAY;
+    Connect4AI game(6);
+    sf::RenderWindow window(sf::VideoMode(700, 700), "Connect4 Game");
 
-    // Connect4AI game(6);
+
+    Connect4UserInterface ui(game, window);
+    ui.Run();
+
+
+
     // game.Run();
     //SfmlCheck();
 
-
+/*
     WSL_ALLOW_DISPLAY;
     sf::RenderWindow window(sf::VideoMode(850, 850), "Connect 4", sf::Style::Close);
     SfmlManager obj(window, 180, 180);
@@ -35,6 +43,7 @@ int main() {
     }
 
     return 0;
+    */
 }
 
 

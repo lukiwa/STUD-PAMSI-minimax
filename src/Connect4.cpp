@@ -9,7 +9,6 @@
 #include "Connect4.h"
 
 Connect4::Connect4() :
-        Game(2),
         _available_places(6 * 7),
         _number_of_columns(7),
         _number_of_rows(6),
@@ -23,9 +22,6 @@ Connect4::Connect4() :
     }
 }
 
-void Connect4::Start() {
-    DisplayGame();
-}
 
 /**
  * @brief Check if the game has winner
@@ -45,50 +41,6 @@ bool Connect4::HaveWinner() const {
  */
 bool Connect4::IsTie() const {
     return _taken_places == _available_places;
-}
-
-/**
- * @brief Method enables two players to play with each other - second one marked as AI
- */
-void Connect4::TakeTurn() {
-    if (_current_player == BoardPositionState::AI) {
-        int col = 0;
-        std::cin >> col;
-        DropCoin(col, BoardPositionState::AI);;
-        _current_player = BoardPositionState::PLAYER;
-        return;
-    }
-
-    if (_current_player == BoardPositionState::PLAYER) {
-        int col = 0;
-        std::cin >> col;
-        DropCoin(col, BoardPositionState::PLAYER);
-        _current_player = BoardPositionState::AI;
-        return;
-    }
-
-
-}
-
-/**
- * @brief Display game in the console
- */
-void Connect4::DisplayGame() {
-    for (int i = 0; i < _number_of_rows; ++i) {
-        for (int j = 0; j < _number_of_columns; ++j) {
-            if (_board[j][i] == BoardPositionState::PLAYER) {
-                std::cout << "P";
-            }
-            if (_board[j][i] == BoardPositionState::AI) {
-                std::cout << "A";
-            }
-            if (_board[j][i] == BoardPositionState::FREE) {
-                std::cout << "F";
-            }
-        }
-        std::cout << std::endl;
-    }
-    std::cout << std::endl;
 }
 
 
@@ -186,5 +138,32 @@ CoinsConnected(int connected, BoardPositionState player) const {
 
 
     return false;
+}
+
+BoardPositionState Connect4::GetCurrentPlayer() {
+    return _current_player;
+}
+
+void Connect4::ChangeCurrentPlayer() {
+    if (_current_player == BoardPositionState::PLAYER) {
+        _current_player = BoardPositionState::AI;
+    }
+    if (_current_player == BoardPositionState::AI) {
+        _current_player = BoardPositionState::PLAYER;
+    }
+
+
+}
+
+LastMove Connect4::GetLastMove() {
+    return _last_move;
+}
+
+int Connect4::GetColumnNumber() {
+    return _number_of_columns;
+}
+
+int Connect4::GetRowNumber() {
+    return _number_of_rows;
 }
 

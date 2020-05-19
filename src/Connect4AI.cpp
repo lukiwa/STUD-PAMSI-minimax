@@ -5,22 +5,6 @@
 #include <map>
 #include "Connect4AI.h"
 
-void Connect4AI::TakeTurn() {
-    if (_current_player == BoardPositionState::AI) {
-        auto move = FindBestMove();
-        DropCoin(move, BoardPositionState::AI);
-        _current_player = BoardPositionState::PLAYER;
-        return;
-    }
-
-    if (_current_player == BoardPositionState::PLAYER) {
-        int col = 0;
-        std::cin >> col;
-        DropCoin(col, BoardPositionState::PLAYER);
-        _current_player = BoardPositionState::AI;
-        return;
-    }
-}
 
 /**
  * @brief Find best move for AI - aka. Minimax

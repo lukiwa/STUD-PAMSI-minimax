@@ -7,7 +7,8 @@
 #pragma once
 
 #include "SFML/Graphics.hpp"
-#include "Connect4AI.h"
+#include "BoardPosition.h"
+#include <iostream>
 
 class SfmlManager {
 private:
@@ -27,6 +28,7 @@ public:
     SfmlManager(int width, int height);
 
     void SetPlayerColor(BoardPositionState player, sf::Color color);
+
     void DrawBoard();
 };
 

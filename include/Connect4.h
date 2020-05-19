@@ -6,12 +6,8 @@
 
 #include <array>
 #include <tuple>
-#include "Game.h"
-
-
-enum class BoardPositionState {
-    PLAYER, AI, FREE
-};
+#include "BoardPosition.h"
+#include "SfmlManager.h"
 
 
 struct LastMove {
@@ -26,8 +22,11 @@ struct LastMove {
     }
 };
 
-class Connect4 : public Game {
+class Connect4 {
+
 protected:
+
+
     const int _number_of_rows;
     const int _number_of_columns;
     const int _available_places;
@@ -38,23 +37,30 @@ protected:
     std::array<std::array<BoardPositionState, 6>, 7> _board{};
 
 
-    void Start() override;
-
-    bool HaveWinner() const override;
-
     bool CoinsConnected(int connected, BoardPositionState player) const;
-
-    bool IsTie() const override;
-
-    void TakeTurn() override;
 
 
 public:
     Connect4();
 
-    void DisplayGame() override;
+    virtual ~Connect4() = default;
 
     bool DropCoin(int column, BoardPositionState state);
+
+    BoardPositionState GetCurrentPlayer();
+
+    void ChangeCurrentPlayer();
+
+    LastMove GetLastMove();
+
+    int GetColumnNumber();
+
+    int GetRowNumber();
+
+
+    bool HaveWinner() const;
+
+    bool IsTie() const;
 
 
 };

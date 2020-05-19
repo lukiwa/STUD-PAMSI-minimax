@@ -24,7 +24,7 @@ int Connect4AI::FindBestMove() {
         auto score = Minimize(alpha, beta, _max_depth);
         moves.emplace(score, i);
 
-
+        
         std::cout << score << " " << i << " " << alpha << std::endl;
         RemoveTopCoin(i);
     }

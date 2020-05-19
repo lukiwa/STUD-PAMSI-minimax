@@ -7,10 +7,12 @@
 #include <array>
 #include <tuple>
 #include "BoardPosition.h"
-#include "SfmlManager.h"
 
 
-struct LastMove {
+/**
+ * @brief Info about performed move.
+ */
+struct Move {
     int column;
     int row;
     BoardPositionState state;
@@ -33,7 +35,7 @@ protected:
     int _taken_places;
     BoardPositionState _current_player;
     mutable BoardPositionState _winner;
-    LastMove _last_move;
+    Move _last_move;
     std::array<std::array<BoardPositionState, 6>, 7> _board{};
 
 
@@ -51,7 +53,7 @@ public:
 
     void ChangeCurrentPlayer();
 
-    LastMove GetLastMove();
+    Move GetLastMove();
 
     int GetColumnNumber();
 

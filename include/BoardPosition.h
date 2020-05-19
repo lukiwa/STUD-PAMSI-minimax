@@ -4,7 +4,9 @@
 
 #pragma once
 
-
+/**
+ * @brief Contains possible board field states.
+ */
 enum class BoardPositionState {
     PLAYER, AI, FREE
 };

@@ -144,6 +144,9 @@ BoardPositionState Connect4::GetCurrentPlayer() {
     return _current_player;
 }
 
+/**
+ * @brief Change current player (eg. after performed turn)
+ */
 void Connect4::ChangeCurrentPlayer() {
     if (_current_player == BoardPositionState::PLAYER) {
         _current_player = BoardPositionState::AI;
@@ -157,14 +160,22 @@ void Connect4::ChangeCurrentPlayer() {
 
 }
 
-LastMove Connect4::GetLastMove() {
+Move Connect4::GetLastMove() {
     return _last_move;
 }
 
+/**
+ * @brief Get total number of columns
+ * @return
+ */
 int Connect4::GetColumnNumber() {
     return _number_of_columns;
 }
 
+/**
+ * @brief Get total number of rows
+ * @return
+ */
 int Connect4::GetRowNumber() {
     return _number_of_rows;
 }

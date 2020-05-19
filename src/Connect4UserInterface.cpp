@@ -49,7 +49,12 @@ void Connect4UserInterface::Run() {
 
             DisplayGame();
 
-            if (_game.HaveWinner()) { return; }
+            if (_game.HaveWinner()) {
+                std::cout << "KONIEC" << std::endl;
+                while (1) {
+
+                }
+            }
             if (_game.IsTie()) { return; }
         }
 
@@ -58,15 +63,23 @@ void Connect4UserInterface::Run() {
     End();
 }
 
+/**
+ * @brief Starting screen
+ */
 void Connect4UserInterface::Start() {
     DisplayGame();
 }
 
+/**
+ * @brief End screen
+ */
 void Connect4UserInterface::End() {
 
 }
 
-
+/**
+ * @brief Display board
+ */
 void Connect4UserInterface::DisplayGame() {
     _window.clear(_background_color);
 
@@ -91,6 +104,9 @@ void Connect4UserInterface::DisplayGame() {
     _window.display();
 }
 
+/**
+ * @brief Allow user to drop coin in selected column, or performs finding best move by AI
+ */
 void Connect4UserInterface::TakeTurn() {
     if (_game.GetCurrentPlayer() == BoardPositionState::PLAYER) {
         int column = 0;
@@ -112,6 +128,9 @@ void Connect4UserInterface::TakeTurn() {
     }
 }
 
+/**
+ * @brief Update colors of the board based on board status
+ */
 void Connect4UserInterface::UpdateCoinsColors() {
     auto last_move = _game.GetLastMove();
 

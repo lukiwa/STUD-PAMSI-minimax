@@ -4,7 +4,10 @@
 
 #pragma once
 
-
+/**
+ * @brief Interface required to perform minimax algorithm, with alpha beta pruning. In derived class appropriate data
+ *        structure required (selected by user)
+ */
 class AIGame {
 public:
     virtual int FindBestMove() = 0;

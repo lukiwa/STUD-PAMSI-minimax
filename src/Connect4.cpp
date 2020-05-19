@@ -69,6 +69,7 @@ void Connect4::TakeTurn() {
 
 
 }
+
 /**
  * @brief Display game in the console
  */
@@ -118,12 +119,12 @@ bool Connect4::DropCoin(int column, BoardPositionState state) {
  * @param player given player
  * @return true if given player has connected given amount of field
  */
-bool Connect4::CoinsConnected(int connected, BoardPositionState player) const {
+bool Connect4::
+CoinsConnected(int connected, BoardPositionState player) const {
     //if row or column contains that set - there is a winner
 
     std::vector<BoardPositionState> to_be_connected(connected);
-    std::fill(to_be_connected.begin(), to_be_connected.end(), player
-    );
+    std::fill(to_be_connected.begin(), to_be_connected.end(), player);
 
 
 

@@ -1,10 +1,11 @@
 #include <iostream>
 #include <SFML/Graphics.hpp>
 #include "Connect4AI.h"
+#include "SfmlManager.h"
 
 
 //if using Windows Subsystem for Linux - this allows viewing sfml
-#define WSL_DISPLAY setenv("DISPLAY", "127.0.0.1:0", true)
+#define WSL_ALLOW_DISPLAY setenv("DISPLAY", "127.0.0.1:0", true)
 #define LOG(x) std::cout << x << std::endl
 
 //test sfml
@@ -12,21 +13,33 @@ void SfmlCheck();
 
 
 int main() {
-    Connect4AI game(6);
-    game.Run();
+
+    // Connect4AI game(6);
+    // game.Run();
     //SfmlCheck();
 
 
+    WSL_ALLOW_DISPLAY;
+    sf::RenderWindow window(sf::VideoMode(850, 850), "Connect 4", sf::Style::Close);
+    SfmlManager obj(window, 180, 180);
+    sf::Event event;
+    while (window.isOpen()) {
+        while (window.pollEvent(event)) {
+            if (event.type == sf::Event::EventType::Closed)
+                window.close();
+        }
 
-
-
+        window.clear();
+        obj.DrawBoard();
+        window.display();
+    }
 
     return 0;
 }
 
 
 void SfmlCheck() {
-    WSL_DISPLAY;
+    WSL_ALLOW_DISPLAY;
     sf::RenderWindow renderWindow(sf::VideoMode(640, 480), "Demo Game");
 
     sf::Event event;

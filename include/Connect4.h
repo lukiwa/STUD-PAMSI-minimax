@@ -59,6 +59,7 @@ public:
 
     int GetRowNumber();
 
+    BoardPositionState GetWinner();
 
     bool HaveWinner() const;
 

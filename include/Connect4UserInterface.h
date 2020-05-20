@@ -7,11 +7,16 @@
 #include "Connect4AI.h"
 #include "SFML/Graphics.hpp"
 
+enum class TerminalGameState {
+    TIE, PLAYER_WINS, AI_WINS, PLAYER2_WINS
+};
+
 class Connect4UserInterface {
 private:
     Connect4AI &_game;
     sf::RenderWindow &_window;
     sf::Event _event;
+    TerminalGameState _state;
 
     //------
     std::array<std::array<sf::CircleShape, 6>, 7> _coins;
@@ -32,6 +37,8 @@ private:
     void DisplayGame();
 
     void End();
+
+    void DrawEndText();
 
     void TakeTurn();
 

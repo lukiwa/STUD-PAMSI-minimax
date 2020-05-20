@@ -52,10 +52,19 @@ void Connect4UserInterface::Run() {
 
 
         if (_game.HaveWinner()) {
-            std::cout << "KONIEC" << std::endl;
-            return;
+            auto winner = _game.GetWinner();
+            if (winner == BoardPositionState::PLAYER) {
+                _state = TerminalGameState::PLAYER_WINS;
+            }
+            if (winner == BoardPositionState::AI) {
+                _state = TerminalGameState::AI_WINS;
+            }
+            break;
         }
-        if (_game.IsTie()) { return; }
+        if (_game.IsTie()) {
+            _state = TerminalGameState::TIE;
+            break;
+        }
     }
 
     End();
@@ -65,15 +74,8 @@ void Connect4UserInterface::Run() {
  * @brief Starting screen
  */
 void Connect4UserInterface::Start() {
-    DisplayGame();
 }
 
-/**
- * @brief End screen
- */
-void Connect4UserInterface::End() {
-
-}
 
 /**
  * @brief Display board
@@ -183,6 +185,58 @@ int Connect4UserInterface::ColumnSelector(sf::Color player_color) {
         }
 
 
+    }
+
+}
+
+/**
+ * @brief Draw ending text of the game
+ */
+void Connect4UserInterface::DrawEndText() {
+    sf::Text winner_text;
+
+    if (_state == TerminalGameState::TIE) {
+        winner_text.setString("It's a Tie!");
+    }
+    if (_state == TerminalGameState::PLAYER_WINS) {
+        winner_text.setString("Player wins!");
+    }
+    if (_state == TerminalGameState::PLAYER2_WINS) {
+        winner_text.setString("Player 2 wins!");
+    }
+    if (_state == TerminalGameState::AI_WINS) {
+        winner_text.setString("AI wins!");
+    }
+
+    sf::Font font;
+    font.loadFromFile("fonts/CaviarDreams.ttf");
+    winner_text.setFillColor(sf::Color::White);
+    winner_text.setCharacterSize(70);
+    winner_text.setFont(font);
+
+    sf::FloatRect background_rectangle = winner_text.getLocalBounds();
+    winner_text.setOrigin(background_rectangle.width / 2, background_rectangle.height / 2);
+    winner_text.setPosition(_window.getSize().x / 2, _window.getSize().y / 2);
+    _window.draw(winner_text);
+}
+
+
+/**
+ * @brief End screen loop
+ */
+void Connect4UserInterface::End() {
+    while (_window.isOpen()) {
+        while (_window.pollEvent(_event)) {
+            if (_event.type == sf::Event::Closed) {
+                _window.close();
+                exit(1);
+            }
+
+        }
+
+        _window.clear(_background_color);
+        DrawEndText();
+        _window.display();
     }
 
 }

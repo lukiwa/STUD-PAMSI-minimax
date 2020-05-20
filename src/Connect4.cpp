@@ -180,3 +180,7 @@ int Connect4::GetRowNumber() {
     return _number_of_rows;
 }
 
+BoardPositionState Connect4::GetWinner() {
+    return _winner;
+}
+

@@ -209,7 +209,7 @@ void Connect4UserInterface::DrawEndText() {
     }
 
     sf::Font font;
-    font.loadFromFile("fonts/CaviarDreams.ttf");
+    font.loadFromFile("../SFML-2.5.1/fonts/CaviarDreams.ttf");
     winner_text.setFillColor(sf::Color::White);
     winner_text.setCharacterSize(70);
     winner_text.setFont(font);

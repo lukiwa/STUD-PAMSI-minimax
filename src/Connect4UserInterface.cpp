@@ -31,6 +31,9 @@ Connect4UserInterface::Connect4UserInterface(Connect4AI &game, sf::RenderWindow 
     _board_picture.setFillColor(sf::Color::Blue);
     _board_picture.setPosition(0, 3 * _coin_radius);
 
+    _to_drop_coin.setRadius(_coin_radius);
+    _to_drop_coin.setOrigin(_coin_radius, _coin_radius);
+
 }
 
 /**
@@ -94,7 +97,7 @@ void Connect4UserInterface::DisplayGame() {
         current_x = _board_picture.getPosition().x + 1.5 * _coin_radius;
     }
 
-
+    _window.draw(_to_drop_coin);
     _window.display();
 }
 
@@ -152,21 +155,18 @@ int Connect4UserInterface::ConvertMousePositionToColumn(sf::Vector2i mouse_posit
  * @return picked column
  */
 int Connect4UserInterface::ColumnSelector(sf::Color player_color) {
-    sf::CircleShape coin(_coin_radius);
-    coin.setOrigin(_coin_radius, _coin_radius);
-    coin.setFillColor(player_color);
+
+    _to_drop_coin.setFillColor(player_color);
 
 
     while (true) {
         //make coin follow the mouse
         const sf::Vector2i mouse_pos{sf::Mouse::getPosition(_window)};
         const sf::Vector2f mouse_coord{_window.mapPixelToCoords(mouse_pos)};
-        coin.setPosition(sf::Vector2f(mouse_coord.x, 1.5 * _coin_radius));
+        _to_drop_coin.setPosition(sf::Vector2f(mouse_coord.x, 1.5 * _coin_radius));
 
-        _window.draw(coin);
+
         DisplayGame();
-        _window.draw(coin);
-        _window.display();
 
 
         while (_window.pollEvent(_event)) {

@@ -19,6 +19,7 @@ private:
     sf::RectangleShape _board_picture;
     float _board_height;
     float _coin_radius;
+    sf::CircleShape _to_drop_coin; //coin at the top - follow player mouse
 
 
     sf::Color _player_color, _ai_color;

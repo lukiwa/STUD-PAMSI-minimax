@@ -36,6 +36,10 @@ private:
 
     void UpdateCoinsColors();
 
+    int ColumnSelector(sf::Color player_color);
+
+    int ConvertMousePositionToColumn(sf::Vector2i mouse_position);
+
 public:
     Connect4UserInterface(Connect4AI &game, sf::RenderWindow &window);
 

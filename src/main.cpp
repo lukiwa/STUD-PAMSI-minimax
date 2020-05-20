@@ -14,36 +14,18 @@ void SfmlCheck();
 
 int main() {
     WSL_ALLOW_DISPLAY;
+
     Connect4AI game(6);
     sf::RenderWindow window(sf::VideoMode(700, 700), "Connect4 Game");
-
-
+    window.setVerticalSyncEnabled(true);
     Connect4UserInterface ui(game, window);
     ui.Run();
 
 
 
-    // game.Run();
     //SfmlCheck();
 
-/*
-    WSL_ALLOW_DISPLAY;
-    sf::RenderWindow window(sf::VideoMode(850, 850), "Connect 4", sf::Style::Close);
-    SfmlManager obj(window, 180, 180);
-    sf::Event event;
-    while (window.isOpen()) {
-        while (window.pollEvent(event)) {
-            if (event.type == sf::Event::EventType::Closed)
-                window.close();
-        }
 
-        window.clear();
-        obj.DrawBoard();
-        window.display();
-    }
-
-    return 0;
-    */
 }
 
 
@@ -53,7 +35,7 @@ void SfmlCheck() {
 
     sf::Event event;
 
-    sf::CircleShape circleShape(200);
+    sf::CircleShape circleShape(50);
     circleShape.setFillColor(sf::Color::Blue);
 
     while (renderWindow.isOpen()) {
@@ -61,6 +43,10 @@ void SfmlCheck() {
             if (event.type == sf::Event::EventType::Closed)
                 renderWindow.close();
         }
+        const sf::Vector2i mouse_pos{sf::Mouse::getPosition(renderWindow)};
+        const sf::Vector2f mouse_coord{renderWindow.mapPixelToCoords(mouse_pos)};
+        circleShape.setPosition(mouse_coord);
+
 
         renderWindow.clear();
         renderWindow.draw(circleShape);

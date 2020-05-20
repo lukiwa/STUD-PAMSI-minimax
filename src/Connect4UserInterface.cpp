@@ -37,27 +37,22 @@ Connect4UserInterface::Connect4UserInterface(Connect4AI &game, sf::RenderWindow 
  * @brief Game loop
  */
 void Connect4UserInterface::Run() {
-    Start();
 
 
     Start();
+
     while (_window.isOpen()) {
-        while (_window.pollEvent(_event)) {
-            if (_event.type == sf::Event::EventType::Closed) { _window.close(); }
-            TakeTurn();
-            UpdateCoinsColors();
 
-            DisplayGame();
+        TakeTurn();
+        UpdateCoinsColors();
+        DisplayGame();
 
-            if (_game.HaveWinner()) {
-                std::cout << "KONIEC" << std::endl;
-                while (1) {
 
-                }
-            }
-            if (_game.IsTie()) { return; }
+        if (_game.HaveWinner()) {
+            std::cout << "KONIEC" << std::endl;
+            return;
         }
-
+        if (_game.IsTie()) { return; }
     }
 
     End();
@@ -82,7 +77,6 @@ void Connect4UserInterface::End() {
  */
 void Connect4UserInterface::DisplayGame() {
     _window.clear(_background_color);
-
 
     _window.draw(_board_picture);
     float current_x = _board_picture.getPosition().x + 1.5 * _coin_radius;
@@ -109,21 +103,18 @@ void Connect4UserInterface::DisplayGame() {
  */
 void Connect4UserInterface::TakeTurn() {
     if (_game.GetCurrentPlayer() == BoardPositionState::PLAYER) {
-        int column = 0;
-        std::cin >> column;
+        auto column = ColumnSelector(_player_color);
         _game.DropCoin(column, BoardPositionState::PLAYER);
-
         _game.ChangeCurrentPlayer();
         return;
     }
 
+
     if (_game.GetCurrentPlayer() == BoardPositionState::AI) {
         auto column = _game.FindBestMove();
-        std::cout << "Column" << column << std::endl;
         _game.DropCoin(column, BoardPositionState::AI);
-
-
         _game.ChangeCurrentPlayer();
+
         return;
     }
 }
@@ -140,6 +131,60 @@ void Connect4UserInterface::UpdateCoinsColors() {
     if (last_move.state == BoardPositionState::PLAYER) {
         _coins[last_move.column][last_move.row].setFillColor(_player_color);
     }
+}
+
+/**
+ * @brief Converts mouse postion to given column
+ * @note Need to check whether column number is in range further
+ * @param mouse_position position of the mouse in the window
+ * @return selected column
+ */
+int Connect4UserInterface::ConvertMousePositionToColumn(sf::Vector2i mouse_position) {
+
+    float column_length = _window.getSize().x / _game.GetColumnNumber();
+
+    return mouse_position.x / column_length;
+}
+
+/**
+ * @brief Allow to pick column by mouse hover and click
+ * @param player_color which color is to be displayed at the top of the board
+ * @return picked column
+ */
+int Connect4UserInterface::ColumnSelector(sf::Color player_color) {
+    sf::CircleShape coin(_coin_radius);
+    coin.setOrigin(_coin_radius, _coin_radius);
+    coin.setFillColor(player_color);
+
+
+    while (true) {
+        //make coin follow the mouse
+        const sf::Vector2i mouse_pos{sf::Mouse::getPosition(_window)};
+        const sf::Vector2f mouse_coord{_window.mapPixelToCoords(mouse_pos)};
+        coin.setPosition(sf::Vector2f(mouse_coord.x, 1.5 * _coin_radius));
+
+        _window.draw(coin);
+        DisplayGame();
+        _window.draw(coin);
+        _window.display();
+
+
+        while (_window.pollEvent(_event)) {
+            //if user clicked - drop the coin
+            if (_event.type == sf::Event::MouseButtonPressed) {
+                //converts mouse postion to column - allow to pick only possible columns
+                return ConvertMousePositionToColumn(mouse_pos) % (_game.GetColumnNumber() + 1);
+            }
+            //also checks if user wants to end the game
+            if (_event.type == sf::Event::EventType::Closed) {
+                _window.close();
+                exit(1);
+            }
+        }
+
+
+    }
+
 }
 
 

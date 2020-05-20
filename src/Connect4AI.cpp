@@ -25,7 +25,7 @@ int Connect4AI::FindBestMove() {
         moves.emplace(score, i);
 
         
-        std::cout << score << " " << i << " " << alpha << std::endl;
+       // std::cout << score << " " << i << " " << alpha << std::endl;
         RemoveTopCoin(i);
     }
 

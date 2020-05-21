@@ -25,7 +25,7 @@ int Connect4AI::FindBestMove() {
         moves.emplace(score, i);
 
 
-        // std::cout << score << " " << i << " " << alpha << std::endl;
+        std::cout << i << " " << score << std::endl;
         RemoveTopCoin(i);
     }
     //get move with highest score
@@ -46,8 +46,8 @@ int Connect4AI::Minimize(int alpha, int beta, int depth) {
         return 1000 + depth;
     }
     if (IsTie()) { return depth; }
-    //in non-terminal case - evaluate ai last move
-    if (depth <= 0) return Evaluate(BoardPositionState::AI);
+    //in non-terminal case - evaluate player last move
+    if (depth <= 0) return -Evaluate(BoardPositionState::PLAYER);
 
 
     int best_move_score = 1000000;
@@ -93,7 +93,7 @@ int Connect4AI::Maximize(int alpha, int beta, int depth) {
         return -depth;
     }
     //in non-terminal case - evaluate ai last move
-    if (depth <= 0) return -Evaluate(BoardPositionState::PLAYER);
+    if (depth <= 0) return Evaluate(BoardPositionState::AI);
 
 
     int best_move_score = -1000000;

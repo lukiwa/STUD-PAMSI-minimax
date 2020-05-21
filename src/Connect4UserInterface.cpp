@@ -140,7 +140,7 @@ void Connect4UserInterface::DifficultySelector() {
 
     sf::Text title, difficulty_easy, difficulty_moderate, difficulty_hard;
     title.setString("Select difficulty");
-    difficulty_easy.setString("1. Easy (depth = 2)");
+    difficulty_easy.setString("1. Easy (depth = 3)");
     difficulty_moderate.setString("2. Moderate (depth = 4)");
     difficulty_hard.setString("3. Hard (depth = 6)");
     sf::Color texts_color(sf::Color::Black);
@@ -186,7 +186,7 @@ void Connect4UserInterface::DifficultySelector() {
                 exit(1);
             }
             if (_event.type == sf::Event::KeyPressed && _event.key.code == sf::Keyboard::Num1) {
-                _game.SetMaxDepth(2);
+                _game.SetMaxDepth(3);
                 return;
             }
             if (_event.type == sf::Event::KeyPressed && _event.key.code == sf::Keyboard::Num2) {

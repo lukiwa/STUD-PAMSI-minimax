@@ -10,7 +10,7 @@
 
 class Connect4AI : public Connect4, public AIGame {
 private:
-    const int _max_depth;
+    int _max_depth;
 
     bool RemoveTopCoin(int column);
 
@@ -23,6 +23,7 @@ private:
 
 
 public:
+    void SetMaxDepth(int depth);
     explicit Connect4AI(int max_depth);
 
     int FindBestMove() override;

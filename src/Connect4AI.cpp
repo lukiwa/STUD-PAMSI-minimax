@@ -24,8 +24,8 @@ int Connect4AI::FindBestMove() {
         auto score = Minimize(alpha, beta, _max_depth);
         moves.emplace(score, i);
 
-        
-       // std::cout << score << " " << i << " " << alpha << std::endl;
+
+        // std::cout << score << " " << i << " " << alpha << std::endl;
         RemoveTopCoin(i);
     }
 
@@ -178,6 +178,10 @@ bool Connect4AI::RemoveTopCoin(int column) {
 }
 
 Connect4AI::Connect4AI(int max_depth) : _max_depth(max_depth) {}
+
+void Connect4AI::SetMaxDepth(int depth) {
+    _max_depth = depth;
+}
 
 
 

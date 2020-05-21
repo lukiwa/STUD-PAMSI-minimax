@@ -52,6 +52,7 @@ void Connect4UserInterface::Run() {
 
 
         if (_game.HaveWinner()) {
+
             auto winner = _game.GetWinner();
             if (winner == BoardPositionState::PLAYER) {
                 _state = TerminalGameState::PLAYER_WINS;
@@ -74,6 +75,130 @@ void Connect4UserInterface::Run() {
  * @brief Starting screen
  */
 void Connect4UserInterface::Start() {
+
+    sf::Font font;
+    font.loadFromFile("../SFML-2.5.1/fonts/CaviarDreams.ttf");
+
+    sf::Text title, game_mode_1, game_mode_2;
+    title.setString("CONNECT FOUR");
+    game_mode_1.setString("1. Player vs Player");
+    game_mode_2.setString("2. Player vs AI");
+    sf::Color texts_color(sf::Color::Black);
+
+    _window.clear(_background_color);
+
+    SetText(title,
+            font,
+            texts_color,
+            50,
+            sf::Vector2i(_window.getSize().x / 2, _window.getSize().y / 3));
+    _window.draw(title);
+
+
+    SetText(game_mode_1,
+            font,
+            texts_color,
+            35,
+            sf::Vector2i(_window.getSize().x / 2, title.getPosition().y + 75));
+    _window.draw(game_mode_1);
+
+    SetText(game_mode_2,
+            font,
+            texts_color,
+            35,
+            sf::Vector2i(_window.getSize().x / 2, title.getPosition().y + 150));
+    _window.draw(game_mode_2);
+    _window.display();
+
+    //loop until player selects gamemode
+    while (_window.isOpen()) {
+        while (_window.pollEvent(_event)) {
+            if (_event.type == sf::Event::Closed) {
+                _window.close();
+                exit(1);
+            }
+            if (_event.type == sf::Event::KeyPressed && _event.key.code == sf::Keyboard::Num1) {
+                _player_vs_player = true;
+                return;
+            }
+            if (_event.type == sf::Event::KeyPressed && _event.key.code == sf::Keyboard::Num2) {
+                _player_vs_player = false;
+                DifficultySelector();
+                return;
+            }
+        }
+    }
+
+}
+
+/**
+ * @brief Allow player to set difficulty
+ */
+void Connect4UserInterface::DifficultySelector() {
+    sf::Font font;
+    font.loadFromFile("../SFML-2.5.1/fonts/CaviarDreams.ttf");
+
+    sf::Text title, difficulty_easy, difficulty_moderate, difficulty_hard;
+    title.setString("Select difficulty");
+    difficulty_easy.setString("1. Easy (depth = 2)");
+    difficulty_moderate.setString("2. Moderate (depth = 4)");
+    difficulty_hard.setString("3. Hard (depth = 6)");
+    sf::Color texts_color(sf::Color::Black);
+
+    _window.clear(_background_color);
+
+    SetText(title,
+            font,
+            texts_color,
+            50,
+            sf::Vector2i(_window.getSize().x / 2, _window.getSize().y / 4));
+    _window.draw(title);
+
+
+    SetText(difficulty_easy,
+            font,
+            texts_color,
+            35,
+            sf::Vector2i(_window.getSize().x / 2, title.getPosition().y + 75));
+    _window.draw(difficulty_easy);
+
+    SetText(difficulty_moderate,
+            font,
+            texts_color,
+            35,
+            sf::Vector2i(_window.getSize().x / 2, title.getPosition().y + 150));
+    _window.draw(difficulty_moderate);
+
+    SetText(difficulty_hard,
+            font,
+            texts_color,
+            35,
+            sf::Vector2i(_window.getSize().x / 2, title.getPosition().y + 225));
+    _window.draw(difficulty_hard);
+    _window.display();
+
+
+    //loop until player selects difficulty
+    while (_window.isOpen()) {
+        while (_window.pollEvent(_event)) {
+            if (_event.type == sf::Event::Closed) {
+                _window.close();
+                exit(1);
+            }
+            if (_event.type == sf::Event::KeyPressed && _event.key.code == sf::Keyboard::Num1) {
+                _game.SetMaxDepth(2);
+                return;
+            }
+            if (_event.type == sf::Event::KeyPressed && _event.key.code == sf::Keyboard::Num2) {
+                _game.SetMaxDepth(4);
+                return;
+            }
+            if (_event.type == sf::Event::KeyPressed && _event.key.code == sf::Keyboard::Num3) {
+                _game.SetMaxDepth(6);
+                return;
+            }
+        }
+    }
 }
 
 
@@ -116,7 +241,13 @@ void Connect4UserInterface::TakeTurn() {
 
 
     if (_game.GetCurrentPlayer() == BoardPositionState::AI) {
-        auto column = _game.FindBestMove();
+        int column;
+        if (_player_vs_player) {
+            column = ColumnSelector(_ai_color);
+        } else {
+            column = _game.FindBestMove();
+        }
+
         _game.DropCoin(column, BoardPositionState::AI);
         _game.ChangeCurrentPlayer();
 
@@ -144,7 +275,7 @@ void Connect4UserInterface::UpdateCoinsColors() {
  * @param mouse_position position of the mouse in the window
  * @return selected column
  */
-int Connect4UserInterface::ConvertMousePositionToColumn(sf::Vector2i mouse_position) {
+int Connect4UserInterface::ConvertMousePositionToColumn(const sf::Vector2i &mouse_position) {
 
     float column_length = _window.getSize().x / _game.GetColumnNumber();
 
@@ -156,7 +287,7 @@ int Connect4UserInterface::ConvertMousePositionToColumn(sf::Vector2i mouse_posit
  * @param player_color which color is to be displayed at the top of the board
  * @return picked column
  */
-int Connect4UserInterface::ColumnSelector(sf::Color player_color) {
+int Connect4UserInterface::ColumnSelector(const sf::Color &player_color) {
 
     _to_drop_coin.setFillColor(player_color);
 
@@ -210,13 +341,11 @@ void Connect4UserInterface::DrawEndText() {
 
     sf::Font font;
     font.loadFromFile("../SFML-2.5.1/fonts/CaviarDreams.ttf");
-    winner_text.setFillColor(sf::Color::White);
-    winner_text.setCharacterSize(70);
-    winner_text.setFont(font);
+    SetText(winner_text,
+            font, sf::Color::Black,
+            70,
+            sf::Vector2i(_window.getSize().x / 2, _window.getSize().y / 2));
 
-    sf::FloatRect background_rectangle = winner_text.getLocalBounds();
-    winner_text.setOrigin(background_rectangle.width / 2, background_rectangle.height / 2);
-    winner_text.setPosition(_window.getSize().x / 2, _window.getSize().y / 2);
     _window.draw(winner_text);
 }
 
@@ -227,6 +356,10 @@ void Connect4UserInterface::DrawEndText() {
 void Connect4UserInterface::End() {
     while (_window.isOpen()) {
         while (_window.pollEvent(_event)) {
+            if (_event.type == sf::Event::MouseButtonPressed) {
+                _window.close();
+                exit(1);
+            }
             if (_event.type == sf::Event::Closed) {
                 _window.close();
                 exit(1);
@@ -234,11 +367,32 @@ void Connect4UserInterface::End() {
 
         }
 
-        _window.clear(_background_color);
         DrawEndText();
         _window.display();
     }
 
 }
+
+/**
+ * @brief Set text on the screen
+ * @param text Text to be displayed
+ * @param font selected font
+ * @param color selected color
+ * @param font_size font size
+ * @param position position on the screen
+ */
+void Connect4UserInterface::SetText(sf::Text &text, const sf::Font &font, const sf::Color &color, int font_size,
+                                    const sf::Vector2i &position) const {
+
+    text.setFont(font);
+    text.setFillColor(color);
+    text.setCharacterSize(font_size);
+    sf::FloatRect f = text.getLocalBounds();
+    text.setOrigin(f.width / 2, 0);
+    text.setPosition(position.x, position.y);
+}
+
+
+
 
 

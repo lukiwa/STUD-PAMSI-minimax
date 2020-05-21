@@ -17,6 +17,7 @@ private:
     sf::RenderWindow &_window;
     sf::Event _event;
     TerminalGameState _state;
+    bool _player_vs_player;
 
     //------
     std::array<std::array<sf::CircleShape, 6>, 7> _coins;
@@ -44,9 +45,14 @@ private:
 
     void UpdateCoinsColors();
 
-    int ColumnSelector(sf::Color player_color);
+    int ColumnSelector(const sf::Color &player_color);
 
-    int ConvertMousePositionToColumn(sf::Vector2i mouse_position);
+    int ConvertMousePositionToColumn(const sf::Vector2i &mouse_position);
+
+    void SetText(sf::Text &text, const sf::Font &font, const sf::Color &color, int font_size,
+                 const sf::Vector2i &position) const;
+
+    void DifficultySelector();
 
 public:
     Connect4UserInterface(Connect4AI &game, sf::RenderWindow &window);

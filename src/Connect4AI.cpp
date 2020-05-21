@@ -28,7 +28,6 @@ int Connect4AI::FindBestMove() {
         // std::cout << score << " " << i << " " << alpha << std::endl;
         RemoveTopCoin(i);
     }
-
     //get move with highest score
     return moves.rbegin()->second;
 }
@@ -122,7 +121,7 @@ int Connect4AI::Maximize(int alpha, int beta, int depth) {
 
 }
 
-/** TODO - possible connections rating
+/**
  * @brief Evaluate score on non-terminal state
  * @param player which player move will be evaluated
  * @return score
@@ -156,7 +155,7 @@ int Connect4AI::Evaluate(BoardPositionState player) {
 }
 
 
-/** TODO improve this
+/**
  * @brief Remove top coin of given column
  * @param column given column
  * @return true if removed, false if not

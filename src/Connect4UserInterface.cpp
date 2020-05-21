@@ -382,7 +382,7 @@ void Connect4UserInterface::End() {
  * @param position position on the screen
  */
 void Connect4UserInterface::SetText(sf::Text &text, const sf::Font &font, const sf::Color &color, int font_size,
-                                    const sf::Vector2i &position) const {
+                                    const sf::Vector2i &position) {
 
     text.setFont(font);
     text.setFillColor(color);

@@ -49,8 +49,8 @@ private:
 
     int ConvertMousePositionToColumn(const sf::Vector2i &mouse_position);
 
-    void SetText(sf::Text &text, const sf::Font &font, const sf::Color &color, int font_size,
-                 const sf::Vector2i &position) const;
+    static void SetText(sf::Text &text, const sf::Font &font, const sf::Color &color, int font_size,
+                 const sf::Vector2i &position) ;
 
     void DifficultySelector();
 

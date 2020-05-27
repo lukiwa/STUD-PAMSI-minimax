@@ -67,7 +67,6 @@ void Connect4UserInterface::Run() {
             break;
         }
     }
-
     End();
 }
 

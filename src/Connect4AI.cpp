@@ -25,7 +25,7 @@ int Connect4AI::FindBestMove() {
         moves.emplace(score, i);
 
 
-        std::cout << i << " " << score << std::endl;
+        //std::cout << i << " " << score << std::endl;
         RemoveTopCoin(i);
     }
     //get move with highest score
@@ -128,12 +128,12 @@ int Connect4AI::Maximize(int alpha, int beta, int depth) {
  */
 int Connect4AI::Evaluate(BoardPositionState player) {
 
-    int evaluation_table[6][7]{{3, 4, 5,  7,  5,  4, 3},
-                               {4, 6, 8,  10, 8,  6, 4},
-                               {5, 8, 11, 13, 11, 8, 5},
-                               {5, 8, 11, 13, 11, 8, 5},
-                               {4, 6, 8,  10, 8,  6, 4},
-                               {3, 4, 5,  7,  5,  4, 3}};
+    const int evaluation_table[6][7]{{3, 4, 5,  7,  5,  4, 3},
+                                     {4, 6, 8,  10, 8,  6, 4},
+                                     {5, 8, 11, 13, 11, 8, 5},
+                                     {5, 8, 11, 13, 11, 8, 5},
+                                     {4, 6, 8,  10, 8,  6, 4},
+                                     {3, 4, 5,  7,  5,  4, 3}};
 
 
     int score = 0;

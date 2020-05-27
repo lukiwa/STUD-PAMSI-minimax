@@ -1,7 +1,7 @@
 # STUD_PAMSI_minimax
 Connect4 game with simple AI - MiniMax with Alpha-Beta pruning.
 
-##To compile:
+## To compile:
 1. Clone this repository
 2. cd STUD_PAMSI_minimax
 3. mkdir release
@@ -10,5 +10,5 @@ Connect4 game with simple AI - MiniMax with Alpha-Beta pruning.
 6. make
 7. Launch program - ./STUD_PAMSI_minimax
 
-##Images
+## Images
 ![game](https://user-images.githubusercontent.com/46877317/83003502-b41ce400-a00e-11ea-9e6a-d649e63c4f6c.png)

@@ -1,5 +1,6 @@
 # STUD_PAMSI_minimax
 Connect4 game with simple AI - MiniMax with Alpha-Beta pruning.
+![game](https://user-images.githubusercontent.com/46877317/83003502-b41ce400-a00e-11ea-9e6a-d649e63c4f6c.png)
 
 To compile:
 1. Clone this repository
